@@ -8,12 +8,6 @@ function App() {
 const[login,setLogin] = useState(false)
 const[isCustomer,setIsCustomer] = useState(true)
 
-
-
-
-
-
-
   return (
     <div className="App">
       <header className="App-header">
