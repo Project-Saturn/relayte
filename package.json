@@ -2,20 +2,37 @@
   "name": "api-project",
   "version": "0.1.0",
   "private": true,
+  "engine": {
+    "node": "14.17.1",
+    "npm": "6.14.13"
+  },
   "dependencies": {
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "knex": "^0.95.6",
+    "knex-migrate": "^1.7.4",
+    "nodemon": "^2.0.7",
+    "pg": "^8.6.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "4.0.3",
     "web-vitals": "^1.1.2"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start:client": "react-scripts start",
+    "build:client": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "hack:server": "nodemon app.js",
+    "new:migration": "knex migrate:make",
+    "rollback:migration": "knex migrate:rollback",
+    "apply:migrations": "knex migrate:latest",
+    "start": "node app.js",
+    "heroku-postbuild": "cd seeds && node import.js && cd .. && cd client && npm install && npm run build"
   },
   "eslintConfig": {
     "extends": [
