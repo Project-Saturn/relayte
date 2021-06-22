@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Reservation from "./Reservation";
+import CurrentTranslator from "./CurrentTranslator";
 
 function Customer() {
   const[isDefault,setIsDefault]=useState(true)
@@ -7,6 +8,10 @@ function Customer() {
 
   const clickHandler = ()=>{
     setIsDefault(false)
+  }
+
+  const clickSelectHandler = ()=>{
+    setCurrentTranslator("this translator")
   }
 
 
@@ -18,15 +23,16 @@ function Customer() {
             <div>
               <div>all translators here</div>
               <div>get   /api/translator</div>
+              <div>翻訳者を選んだらsetCurrentTranslator()でいれる</div>
+              <button onClick={clickSelectHandler}>select this translator</button>
               <button onClick={clickHandler}>reservation</button>
             </div>
           ): (
-            // <Yoyaku/>
-            <div>a</div>
+            <div>
+              <CurrentTranslator setCurrentTranslator={setCurrentTranslator}/>
+            </div>
           )}
-          <div>all translators here</div>
-          <div>get   /api/translator</div>
-          <button onClick={clickHandler}>reservation</button>
+          
         </div>
       ): (
         <Reservation setIsDefault={setIsDefault}/>  
