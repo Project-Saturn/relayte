@@ -31,8 +31,7 @@
     "new:migration": "knex migrate:make",
     "rollback:migration": "knex migrate:rollback",
     "apply:migrations": "knex migrate:latest",
-    "start": "node app.js",
-    "heroku-postbuild": "cd seeds && node import.js && cd .. && cd client && npm install && npm run build"
+    "start": "node app.js"
   },
   "eslintConfig": {
     "extends": [
