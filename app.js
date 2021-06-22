@@ -32,6 +32,27 @@ app.get('/api/translators' , async (req, res) => {
   res.json(response);
 });
 
+app.get('/api/reservations/:id' , async (req, res) => {
+  console.log(`Get reservation ${req.params.id}`);
+  const response = await knex('reservations').select('*').where('id', req.params.id);
+  console.log(response);
+  res.json(response);
+});
+
+app.get('/api/customers/:id' , async (req, res) => {
+  console.log(`Get customer ${req.params.id}`);
+  const response = await knex('customers').select('*').where('id', req.params.id);
+  console.log(response);
+  res.json(response);
+});
+
+app.get('/api/translators/:id' , async (req, res) => {
+  console.log(`Get translator ${req.params.id}`);
+  const response = await knex('translators').select('*').where('id', req.params.id);
+  console.log(response);
+  res.json(response);
+});
+
 app.post('/api/reservations' , async (req, res) => {
   console.log('Create New Reservation');
   console.log(req.body.reservation);
