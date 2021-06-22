@@ -10,7 +10,7 @@ function Reservation({setIsDefault}) {
     <div>
       <div>Reservations here</div> 
       <div>get   /api/reservation/:id</div>
-      <button onClick={clickHandler}>all Translator</button>
+      <button onClick={clickHandler}>もどる</button>
     </div>
   );
 }
