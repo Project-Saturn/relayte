@@ -9,7 +9,7 @@ const knex = require('knex')(dbConfig);
 app = express();
 app.use(cors());
 app.use(express.json());
-app.use(express.static('client/build'));
+app.use(express.static('build'));
 
 app.get('/api/reservations' , async (req, res) => {
   console.log('Get all reservations');
