@@ -2,14 +2,18 @@ import './App.css';
 import Customer from './Customer';
 import Translator from './Translator';
 import Login from './Login';
+import SetPriceAndLanguage from './SetPriceAndLanguage';
 import React, { useEffect, useState } from "react";
 
 function App() {
-const[login,setLogin] = useState(false)
-const[isCustomer,setIsCustomer] = useState(true)
+  const[login,setLogin] = useState(false)
+  const[isCustomer,setIsCustomer] = useState(true)
+  const[priceAndLanguage,setPriceAndLanguage] = useState(false)
 
-
-
+  // const getPriceAndLanguage = () =>{
+    // get  api/translator/:id 
+    // price !== null && language !== null -> setPriceAndLanguage(true)
+  // }
 
 
 
@@ -27,7 +31,16 @@ const[isCustomer,setIsCustomer] = useState(true)
             {isCustomer === true ?(
               <Customer />)
               : (
-                <Translator/>
+                <div>
+                  {priceAndLanguage === false ?(
+                    <div>
+                      <SetPriceAndLanguage setPriceAndLanguage={setPriceAndLanguage} />
+                    </div>
+                  ):(
+                    <Translator/>
+                  )}
+                  
+                </div>  
               )}
 
 
