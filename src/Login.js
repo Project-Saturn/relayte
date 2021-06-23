@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios"
 
 function Login({setLogin,setIsCustomer}) {
   const [val, setVal] = React.useState('true');
@@ -8,8 +9,19 @@ function Login({setLogin,setIsCustomer}) {
     e.target.value === "true" ? setIsCustomer(true) : setIsCustomer(false)
   }
 
-  const clickHandler = ()=>{
+  const clickHandler = async()=>{
     setLogin(true)
+    if(val) {
+      await axios.post('http://localhost:5000/api/customers',{
+      
+        "customer": {
+            "name": "Mikeee",
+            "google_id": "fsjo4839dsa",
+            "email": "customer@test.com"
+        }
+    
+      })
+    }
   }
 
   return (
