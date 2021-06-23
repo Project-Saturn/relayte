@@ -13,6 +13,13 @@ import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControl from '@material-ui/core/FormControl';
+import FormLabel from '@material-ui/core/FormLabel';
+import { withStyles } from '@material-ui/core/styles';
+import { green } from '@material-ui/core/colors';
+
 
 function Copyright() {
   return (
@@ -72,6 +79,16 @@ function Login({setLogin,setIsCustomer}) {
     setLogin(true)
   }
 
+  const GreenRadio = withStyles({
+    root: {
+      color: green[400],
+      '&$checked': {
+        color: green[600],
+      },
+    },
+    checked: {},
+  })((props) => <Radio color="default" {...props} />);
+
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
@@ -79,7 +96,6 @@ function Login({setLogin,setIsCustomer}) {
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>
-       
           </Avatar>
           <Typography component="h1" variant="h5">
             Sign in
@@ -107,42 +123,47 @@ function Login({setLogin,setIsCustomer}) {
               id="password"
               autoComplete="current-password"
             />
-            <FormControlLabel
+            {/* <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
-            />
+            /> */}
+            <Grid spacing={0}
+                  direction="column"
+                  alignItems="center"
+                  justify="center"
+                  >
+           <FormControlLabel control={ <Radio
+                  checked={val === 'true'}
+                  onChange={handleChange}
+                  value="true"
+                  name="radio-button-demo"
+                  // inputProps={{ 'aria-label': 'A' }}
+                  />} label="Customer" />
+                  
+                  <FormControlLabel control={ 
+                     <Radio
+                  checked={val === 'false'}
+                  onChange={handleChange}
+                  value="false"
+                  name="radio-button-demo"
+                  // inputProps={{ 'aria-label': 'A' }} 
+                  />} label="Translator" />    
+            </Grid>
             <Button
-              onClick={clickHandler}
-              onChange={handleChange}
               type="submit"
               fullWidth
               variant="contained"
               color="primary"
-              className={classes.submit}
-              value="true"
-              checked={val === 'true'}
+              onClick={clickHandler}
             >
               Login
             </Button>
-            <Button
-              onClick={clickHandler}
-              type="submit"
-              fullWidth
-              variant="outlined"
-              color="primary"
-              className={classes.submit}
-              value="false"
-              onChange={handleChange}
-              checked={val === 'false'}
-            >
-              Login as Translator
-            </Button>
             <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
+                <Grid item xs>
+                  <Link href="#" variant="body2">
+                    Forgot password?
+                  </Link>
+                </Grid>
               <Grid item>
                 <Link href="#" variant="body2">
                   {"Don't have an account? Sign Up"}
@@ -182,7 +203,8 @@ function Login({setLogin,setIsCustomer}) {
 //         Translator
 //       </label>
 //       <p></p>
-//       <button >Login</button>
+//       <button 
+//       onClick={clickHandler}>Login</button>
 //     </div>
 //   );
 // }

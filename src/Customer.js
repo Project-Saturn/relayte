@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
 import Reservation from "./Reservation";
 import CurrentTranslator from "./CurrentTranslator";
+import NavBar from "./NavBar";
 
-function Customer() {
+const Customer = ()=>{
   const[isDefault,setIsDefault]=useState(true)
   const[currentTranslator,setCurrentTranslator]=useState(null)
 
@@ -14,8 +15,11 @@ function Customer() {
     setCurrentTranslator("this translator")
   }
 
-
   return (
+    <Fragment>
+    <div>
+    <NavBar/>
+    </div>
     <div>
       {isDefault === true ? (
         <div>
@@ -38,6 +42,7 @@ function Customer() {
         <Reservation setIsDefault={setIsDefault}/>  
       )}
     </div>
+    </Fragment>
   );
 }
 
