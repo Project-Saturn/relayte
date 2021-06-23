@@ -17,7 +17,7 @@ exports.up = function (knex) {
           table.string('google_id', 255).notNullable();
           table.string('email', 255).notNullable();
           table.string('phone', 255);
-          table.specificType('reservation_ids', 'uuid ARRAY');
+          table.specificType('reservation_ids', 'text ARRAY');
         })
         .createTable('translators', function (table) {
           table.uuid('id').primary().defaultTo(knex.raw('uuid_generate_v4()'));
@@ -27,7 +27,7 @@ exports.up = function (knex) {
           table.string('phone', 255);
           table.integer('price').notNullable();
           table.specificType('languages', 'text ARRAY').notNullable();
-          table.specificType('reservation_ids', 'uuid ARRAY');
+          table.specificType('reservation_ids', 'text ARRAY');
         })
         .alterTable('reservations', function (table) {
           table.foreign('customer_id').references('id').inTable('customers');
