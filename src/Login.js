@@ -1,32 +1,52 @@
 import React from "react";
 import axios from "axios"
 
-function Login({setLogin,setIsCustomer}) {
+function Login({setLogin,setIsCustomer,user}) {
   const [val, setVal] = React.useState('true');
-
+  
+  const gId= user.providerData[0].uid
+  
   const handleChange = e => {
     setVal(e.target.value);
     e.target.value === "true" ? setIsCustomer(true) : setIsCustomer(false)
   }
 
+  const createCustomer = async()=>{
+    console.log("create")
+    await axios.post('http://localhost:5000/api/customers',{
+       
+          "customer": {
+              "name": `${user.displayName}`,
+              "google_id": `${gId}`,
+              "email": `${user.email}`
+          }
+       
+    })
+  }
+
   const clickHandler = async()=>{
     setLogin(true)
     if(val) {
-      await axios.post('http://localhost:5000/api/customers',{
       
-        "customer": {
-            "name": "Mikeee",
-            "google_id": "fsjo4839dsa",
-            "email": "customer@test.com"
+      await axios.get(`http://localhost:5000/api/customers/google/${gId}`).then(d=>{
+        
+        
+        if(!!d.data){
+          createCustomer()
         }
-    
+        
       })
+
+
+
+      
     }
   }
 
   return (
     <div>
       
+      <div>{user.displayName}</div>
 
       <label>
         <input
@@ -52,4 +72,4 @@ function Login({setLogin,setIsCustomer}) {
   );
 }
 
-export default Login;
+export default Login
