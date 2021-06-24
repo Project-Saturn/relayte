@@ -86,7 +86,10 @@ function App() {
                     : (
                       <div>
                         {isCustomer === true ?(
-                          <Customer uuid={uuid}/>)
+                          <Customer 
+                          isCustomer={isCustomer}
+                          uuid={uuid}
+                          />)
                           : (
                             <div>
                               {priceAndLanguage === false ?(

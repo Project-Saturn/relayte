@@ -3,25 +3,35 @@ import Reservation from "./Reservation";
 import CurrentTranslator from "./CurrentTranslator";
 import { assertExpressionStatement } from "@babel/types";
 import axios from "axios"
-function Customer({uuid}) {
+function Customer({isCustomer,uuid}) {
   const[isDefault,setIsDefault]=useState(true)
   const[currentTranslator,setCurrentTranslator]=useState(null)
   const[translators,setTranslators]=useState(["a"])
+  const[userUuid,setUserUuid]=useState("")
   const clickHandler = ()=>{
     setIsDefault(false)
   }
   const clickSelectHandler = (e) => {
-    console.log(e.target.id)
     setCurrentTranslator(e.target.id)
   }
   const getTranslator = async ()=>{
     await axios.get('http://localhost:5000/api/translators').then(d=>{
-      console.log(d.data)
       setTranslators(d.data)
     })
   }
+
+  const getUuid = async()=>{
+    await axios.get(`http://localhost:5000/api/customers/google/${uuid}`).then(d=>{
+      
+      setUserUuid(d.data[0].reservation_ids)
+
+    })
+  }
+
+
   React.useEffect(() => {
     getTranslator()
+    getUuid()
   }, []);
   return (
     <div>
@@ -62,7 +72,11 @@ function Customer({uuid}) {
           )}
         </div>
       ): (
-        <Reservation setIsDefault={setIsDefault}/>  
+        <Reservation 
+        isCustomer={isCustomer}
+        userUuid={userUuid}
+        setIsDefault={setIsDefault}
+        />  
       )}
     </div>
   );
