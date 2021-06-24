@@ -58,7 +58,7 @@ function App() {
   const checkTranslator = async() =>{
     if(user){
       await axios.get(`http://localhost:5000/api/translators/google/${user.providerData[0].uid}`).then(d=>{
-        console.log("translator check",d.data.length===0)
+        
         if(d.data.length!==0) setPriceAndLanguage(true)
       })
       setUuid(user.providerData[0].uid)

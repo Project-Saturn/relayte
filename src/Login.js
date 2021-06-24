@@ -12,6 +12,10 @@ function Login({setLogin,setIsCustomer,user}) {
   }
 
   const createCustomer = async()=>{
+
+    //if(/api/customers/google/user.providerData[0].uid ===[])
+
+
     console.log("create")
     await axios.post('http://localhost:5000/api/customers',{
        
@@ -30,8 +34,8 @@ function Login({setLogin,setIsCustomer,user}) {
       
       await axios.get(`http://localhost:5000/api/customers/google/${gId}`).then(d=>{
         
-        
-        if(!!d.data){
+        console.log("check",d.data.length===0)
+        if(d.data.length===0){
           createCustomer()
         }
         
