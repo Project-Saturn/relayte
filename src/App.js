@@ -39,7 +39,7 @@ function App() {
       <button onClick={signInWithGoogle}>Sign in with Google</button>
       );
     }
-    console.log(user)
+    // console.log(user)
   if (user)
   {
     // console.log(user.providerData[0].uid)// google ID
@@ -56,8 +56,8 @@ function App() {
   const checkTranslator = async() =>{
     if(user){
       await axios.get(`http://localhost:5000/api/translators/google/${user.providerData[0].uid}`).then(d=>{
-        console.log("checktrans",!!d.data)
-        if(!d.data) setPriceAndLanguage(true)
+        console.log("translator check",d.data.length===0)
+        if(d.data.length!==0) setPriceAndLanguage(true)
       })
     }
   }

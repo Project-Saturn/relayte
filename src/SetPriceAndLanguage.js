@@ -48,24 +48,38 @@ function SetPriceAndLanguage({setPriceAndLanguage,user}) {
     return { value, onChange: (e) => set(e.target.value) }
   };
 
-  const name = useInput("");
-  const pass = useInput("");
+  const price = useInput("");
+  const languages = useInput("");
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async(event) => {
     event.preventDefault();
-    console.log(name);
-    console.log(pass);
+    console.log(price);
+    console.log(languages.value);
+
+    await axios.post('http://localhost:5000/api/translators',{
+      
+      "translator": {
+        "name": `${user.displayName}`,
+        "google_id": `${user.providerData[0].uid}`,
+        "email": `${user.email}`,
+        "price": Number(price.value),
+        "languages":[languages.value]
+      }
+      
+    })
+
+    setPriceAndLanguage(true)
   };
 
   return (
     <form onSubmit={handleSubmit}>
       <label>
-        Name:
-        <input type="text" {...name} />
+        price:
+        <input type="text" {...price} />
       </label>
       <label>
-        Pass:
-        <input type="password" {...pass} />
+        languages:
+        <input type="text" {...languages} />
       </label>
       <input type="submit" value="Submit" />
     </form>
