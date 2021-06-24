@@ -94,7 +94,7 @@ function App() {
                                   />
                                 </div>
                               ):(
-                                <Translator/>
+                                <Translator user={user}/>
                               )}
                           
                             </div>  
