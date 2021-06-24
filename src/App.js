@@ -27,7 +27,9 @@ function App() {
   const[login,setLogin] = useState(false)
   const[isCustomer,setIsCustomer] = useState(true)
   const[priceAndLanguage,setPriceAndLanguage] = useState(false)
+  const[uuid,setUuid] = useState("")
   const [user] = useAuthState(auth);
+
 
   function SignIn() {
     const signInWithGoogle = () => {
@@ -59,6 +61,7 @@ function App() {
         console.log("translator check",d.data.length===0)
         if(d.data.length!==0) setPriceAndLanguage(true)
       })
+      setUuid(user.providerData[0].uid)
     }
   }
 
@@ -83,7 +86,7 @@ function App() {
                     : (
                       <div>
                         {isCustomer === true ?(
-                          <Customer />)
+                          <Customer uuid={uuid}/>)
                           : (
                             <div>
                               {priceAndLanguage === false ?(

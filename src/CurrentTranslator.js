@@ -1,33 +1,94 @@
-import React from "react";
+import React, { useState , useInput ,useEffect} from "react";
 import axios from "axios";
 
-function CurrentTranslator({setCurrentTranslator}) {
+function CurrentTranslator({uuid,currentTranslator,setCurrentTranslator}) {
+  const[userUuid,setUserUuid]=useState("")
 
-  const clickHandler = async ()=>{
+  const useInput = initialValue => {
+    const [value, set] = useState(initialValue)
+    return { value, onChange: (e) => set(e.target.value) }
+  };
+
+  const time = useInput("");
+  const duration = useInput("");
+
+  const handleSubmit = async(event) => {
+    event.preventDefault();
+    // console.log(time.value);
+    // console.log(duration.value);
+    // console.log("currentTranslator",currentTranslator)
+    // console.log("uuid",uuid)
+    
+    console.log("id",userUuid)
+
     await axios.post('http://localhost:5000/api/reservations',{
       
-        //c_id,t_idは上から持ってくる　s_time,d_minuteはここで取得
+  //       //c_id,t_idは上から持ってくる　s_time,d_minuteはここで取得
         
           "reservation": {
-              "customer_id": "51bbc994-21c9-4151-b4d1-eccf6d3b5f11",
-              "translator_id": "12302b59-6b8e-49bc-a4be-5e1ee173ba4e",
-              "start_time": "today",
-              "duration_minutes": 90,
+              "customer_id": `${userUuid}`,
+              "translator_id": `${currentTranslator}`,
+              "start_time": `${time.value}`,
+              "duration_minutes": Number(duration.value),
               "url": "https://www.testmeeting.com"
           }
       
     
     })
+    
+
+    setCurrentTranslator(null)
+  };
+
+  const returnHandler = ()=>{
     setCurrentTranslator(null)
   }
 
+  const getUuid = async()=>{
+    await axios.get(`http://localhost:5000/api/customers/google/${uuid}`).then(d=>{
+      console.log("a",d.data[0].id)
+      setUserUuid(d.data[0].id)
+    })
+  }
+
+  useEffect(()=>{
+    getUuid()
+  },[])
+
   return (
     <div>
-      <div>日付、時間</div>
-      <div>新規予約作成</div>
-      <button onClick={clickHandler}>send</button>
+      <form onSubmit={handleSubmit}>
+        <div>予約したい日程及び開始時刻、会議時間を入力してください</div>
+        <label>
+          start time:
+          <input type="text" {...time} />
+        </label>
+        <label>
+          duration (min):
+          <input type="text" {...duration} />
+        </label>
+        <input type="submit" value="Submit" />
+      </form>
+      <button onClick={returnHandler}>もどる</button>
     </div>
   );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
 
 export default CurrentTranslator;
