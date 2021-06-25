@@ -58,7 +58,7 @@ function CurrentTranslator({uuid,currentTranslator,setCurrentTranslator}) {
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        <div>予約したい日程及び開始時刻、会議時間を入力してください</div>
+        <div>Please input your start date and time and duration of reservation</div>
         <label>
           start time:
           <input type="text" {...time} />
@@ -69,7 +69,7 @@ function CurrentTranslator({uuid,currentTranslator,setCurrentTranslator}) {
         </label>
         <input type="submit" value="Submit" />
       </form>
-      <button onClick={returnHandler}>もどる</button>
+      <button onClick={returnHandler}>Back</button>
     </div>
   );
 
