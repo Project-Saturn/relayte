@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import Reservation from "./Reservation";
 import axios from "axios";
-function Translator({user}) {
+function Translator({uuid,user}) {
   const[isDefault,setIsDefault]=useState(true)
   const[reservations,setReservations]=useState([])
   const[myUuid,setMyUuid]=useState("")
+  const[userUuid,setUserUuid]=useState([])
   const tmp=[]
   const clickHandler = ()=>{
     setIsDefault(false)
@@ -21,8 +22,9 @@ function Translator({user}) {
         //if(element.translator_id===getuuid() && element.accepted===null){
         //  element を格納　＆表示
         //}
+        
         if(element.translator_id===myUuid && element.accepted===null){
-          tmp.push(element)
+          
         }
       });
     })
@@ -41,15 +43,16 @@ function Translator({user}) {
     { reservation: { "accepted": false } });
   }
   const getUuid=async()=>{
-    console.log("my g-id",user.providerData[0].uid)
+    // console.log("uuid",uuid)
     await axios.get(`http://localhost:5000/api/translators/google/${user.providerData[0].uid}`).then(d=>{
-      console.log(d.data[0].id)
       setMyUuid(d.data[0].id)
+      setUserUuid(d.data[0].reservation_ids)
     })
   }
+ 
   React.useEffect(() => {
-    getReservations()
     getUuid()
+    getReservations()
   },[]);
   return (
     <div>
@@ -83,7 +86,11 @@ function Translator({user}) {
           <button onClick={clickHandler}>reservation</button>
         </div>
       ): (
-        <Reservation setIsDefault={setIsDefault}/>  
+        <Reservation 
+        userUuid={userUuid}
+        /* ↑　予約IDの配列 */
+        setIsDefault={setIsDefault}
+        />  
       )}
     </div>
   );
