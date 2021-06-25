@@ -11,7 +11,25 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static('build'));
 
-app.get('/api/reservations' , async (req, res) => {
+app.get('/video/token/:room/:identity', async (req, res) => {
+  console.log('Getting twilio configs');
+  const config = require('./config');
+
+  console.log("Generating token");
+  const { videoToken } = require('./tokens');
+  const identity = req.params.identity;
+  const room = req.params.room;
+  const token = videoToken(identity, room, config);
+
+  console.log('Returning token');
+  res.set('Content-Type', 'application/json');
+  const jwtToken = { token: token.toJwt() };
+  
+  console.log(jwtToken);
+  res.json(jwtToken);
+});
+
+app.get('/api/reservations', async (req, res) => {
   try {
     console.log('Get all reservations');
     const response = await knex('reservations')
@@ -24,7 +42,7 @@ app.get('/api/reservations' , async (req, res) => {
   }
 });
 
-app.get('/api/customers' , async (req, res) => {
+app.get('/api/customers', async (req, res) => {
   try {
     console.log('Get all customers');
     const response = await knex('customers')
@@ -37,7 +55,7 @@ app.get('/api/customers' , async (req, res) => {
   }
 });
 
-app.get('/api/translators' , async (req, res) => {
+app.get('/api/translators', async (req, res) => {
   try {
     console.log('Get all translators');
     const response = await knex('translators')
@@ -120,15 +138,15 @@ app.get('/api/translators/google/:id', async (req, res) => {
   }
 });
 
-app.post('/api/reservations' , async (req, res) => {
+app.post('/api/reservations', async (req, res) => {
   try {
     console.log('Create New Reservation');
     console.log(req.body.reservation);
     const reservation_id = (await knex('reservations')
       .insert(req.body.reservation, 'id'))[0];
-    console.log({'id': reservation_id});
+    console.log({ 'id': reservation_id });
     const { customer_id, translator_id } = req.body.reservation;
-    
+
 
     console.log('Updating customer');
     const customerReservations = (await knex('customers')
@@ -140,10 +158,10 @@ app.post('/api/reservations' , async (req, res) => {
     customerReservations.push(reservation_id);
     console.log('Updated customer reservations');
     console.log(customerReservations);
-    
+
     const responseCustomer = await knex('customers')
       .where('id', customer_id)
-      .update({'reservation_ids': customerReservations});
+      .update({ 'reservation_ids': customerReservations });
     console.log('Customer update response');
     console.log(responseCustomer);
     console.log('Customer updated');
@@ -155,53 +173,53 @@ app.post('/api/reservations' , async (req, res) => {
       .where('id', translator_id))[0].reservation_ids;
     console.log('Current translator reservations');
     console.log(translatorReservations);
-    
+
     translatorReservations.push(reservation_id);
     console.log('Updated translator reservations');
     console.log(translatorReservations);
-    
+
     const responseTranslator = await knex('translators')
       .where('id', translator_id)
-      .update({'reservation_ids': translatorReservations});
+      .update({ 'reservation_ids': translatorReservations });
     console.log('Translator update response');
     console.log(responseTranslator);
     console.log('Translator updated');
 
-    res.json({'id': reservation_id});
+    res.json({ 'id': reservation_id });
   } catch (error) {
     console.error(error.message);
     res.json(error.message);
   }
 });
 
-app.post('/api/customers' , async (req, res) => {
+app.post('/api/customers', async (req, res) => {
   try {
-    Object.assign(req.body.customer, {'reservation_ids': []});
-    
+    Object.assign(req.body.customer, { 'reservation_ids': [] });
+
     console.log('Create New Customer');
     console.log(req.body.customer);
     const customerId = await knex('customers')
       .insert(req.body.customer, 'id');
-    console.log({'id': customerId[0]});
+    console.log({ 'id': customerId[0] });
 
-    res.json({'id': customerId[0]});
+    res.json({ 'id': customerId[0] });
   } catch (error) {
     console.error(error.message);
     res.json(error.message);
   }
 });
 
-app.post('/api/translators' , async (req, res) => {
+app.post('/api/translators', async (req, res) => {
   try {
-    Object.assign(req.body.translator, {'reservation_ids': []});
+    Object.assign(req.body.translator, { 'reservation_ids': [] });
 
     console.log('Create New Translator');
     console.log(req.body.translator);
     const translatorId = await knex('translators')
       .insert(req.body.translator, 'id');
-    console.log({'id': translatorId[0]});
+    console.log({ 'id': translatorId[0] });
 
-    res.json({'id': translatorId[0]});
+    res.json({ 'id': translatorId[0] });
   } catch (error) {
     console.error(error.message);
     res.json(error.message);
@@ -273,11 +291,13 @@ app.delete('/api/reservations/:id', async (req, res) => {
     console.log(`Removing reservation ${req.params.id}`);
     const responseCustomer = await knex('customers')
       .where('id', customer_id)
-      .update({'reservation_ids': customerReservations
-        .filter(e => e !== req.params.id)});
+      .update({
+        'reservation_ids': customerReservations
+          .filter(e => e !== req.params.id)
+      });
     console.log(responseCustomer);
     console.log(`Reservation ${req.params.id} removed from customer`);
-    
+
     console.log(`Updating translator id ${translator_id}`);
     console.log('Retrieving translator reservations');
     const translatorReservations = (await knex('translators')
@@ -286,8 +306,10 @@ app.delete('/api/reservations/:id', async (req, res) => {
     console.log(`Removing reservation ${req.params.id}`);
     const responseTranslator = await knex('translators')
       .where('id', translator_id)
-      .update({'reservation_ids': translatorReservations
-        .filter(e => e !== req.params.id)});
+      .update({
+        'reservation_ids': translatorReservations
+          .filter(e => e !== req.params.id)
+      });
     console.log(responseTranslator);
     console.log(`Reservation ${req.params.id} removed from translator`);
     res.json(responseReservation);
@@ -301,8 +323,8 @@ app.get('/room', async (req, res) => {
   console.log('Serving alternate page');
   res.sendFile(path.join(__dirname, 'client/build/newone.html'));
 })
- 
-  
+
+
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });
