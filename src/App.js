@@ -7,6 +7,8 @@ import React, { useEffect, useState } from 'react';
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/auth';
+import axios from "axios"
+
 import { useAuthState } from 'react-firebase-hooks/auth';
 require('dotenv').config();
 
@@ -25,8 +27,10 @@ function App() {
   const[login,setLogin] = useState(false)
   const[isCustomer,setIsCustomer] = useState(true)
   const[priceAndLanguage,setPriceAndLanguage] = useState(false)
-  
+  const[uuid,setUuid] = useState("")
   const [user] = useAuthState(auth);
+
+
   function SignIn() {
     const signInWithGoogle = () => {
       const provider = new firebase.auth.GoogleAuthProvider();
@@ -37,45 +41,86 @@ function App() {
       <button onClick={signInWithGoogle}>Sign in with Google</button>
       );
     }
-    console.log(user)
-    
+    // console.log(user)
+  if (user)
+  {
+    // console.log(user.providerData[0].uid)// google ID
+    // console.log(user.displayName) //displayName
+    // console.log(user.email) //email
+    // console.log(user.phoneNumber)
+  }
+      
   // const getPriceAndLanguage = () =>{
     // get  api/translator/:id 
     // price !== null && language !== null -> setPriceAndLanguage(true)
   // }
 
+  const checkTranslator = async() =>{
+    if(user){
+      await axios.get(`http://localhost:5000/api/translators/google/${user.providerData[0].uid}`).then(d=>{
+        
+        if(d.data.length!==0) setPriceAndLanguage(true)
+      })
+      setUuid(user.providerData[0].uid)
+    }
+  }
 
+  useEffect(()=>{
+    checkTranslator()
+  },[user])
 
-
+ 
   return (
     <div className="App">
       <header className="App-header">
         {user ? <button onClick={() => auth.signOut()}>Sign Out</button> : <SignIn />}
-        {login === false ?(
-        <Login 
-          setLogin={setLogin} 
-          setIsCustomer={setIsCustomer}
-        />) 
-        : (
+
+        {user!==null?(
           <div>
-            {isCustomer === true ?(
-              <Customer />)
-              : (
-                <div>
-                  {priceAndLanguage === false ?(
-                    <div>
-                      <SetPriceAndLanguage setPriceAndLanguage={setPriceAndLanguage} />
-                    </div>
-                  ):(
-                    <Translator/>
-                  )}
-                  
-                </div>  
-              )}
+            {login === false ?(
+                    <Login 
+                      setLogin={setLogin} 
+                      setIsCustomer={setIsCustomer}
+                      user={user}
+                    />) 
+                    : (
+                      <div>
+                        {isCustomer === true ?(
+                          <Customer 
+                          isCustomer={isCustomer}
+                          uuid={uuid}
+                          />)
+                          : (
+                            <div>
+                              {priceAndLanguage === false ?(
+                                <div>
+                                  <SetPriceAndLanguage 
+                                  setPriceAndLanguage={setPriceAndLanguage} 
+                                  user={user}
+                                  />
+                                </div>
+                              ):(
+                                <Translator 
+                                uuid={uuid}
+                                user={user}
+                                />
+                              )}
+                          
+                            </div>  
+                          )}
 
 
+                      </div>
+                    )}
           </div>
+          ):(
+            <div>
+
+            </div>
         )}
+
+
+        
 
 
       </header>
