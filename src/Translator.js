@@ -10,10 +10,14 @@ function Translator({uuid,user}) {
   const clickHandler = ()=>{
     setIsDefault(false)
   }
+  const clickHandler2 = ()=>{
+    console.log(tmp)
+    setReservations(tmp)
+  }
   const getReservations = async ()=>{
     await axios.get('http://localhost:5000/api/reservations').then(d => {
-      setReservations(d.data)
-      console.log(d.data)
+      
+      // setReservations(d.data)
       return d.data
     })
     .then(data=>{
@@ -22,11 +26,14 @@ function Translator({uuid,user}) {
         //if(element.translator_id===getuuid() && element.accepted===null){
         //  element を格納　＆表示
         //}
-        
+        console.log(element.translator_id===myUuid && element.accepted===null)
         if(element.translator_id===myUuid && element.accepted===null){
-          
+          tmp.push(element)
         }
+          
       });
+      console.log(tmp)
+      setReservations(tmp)
     })
    // setReservations(tmp)
   }
@@ -36,6 +43,7 @@ function Translator({uuid,user}) {
     console.log("ID! "+ id)
    await axios.put(`http://localhost:5000/api/reservations/${id}`, 
     { reservation: { "accepted": true } });
+
   }
   const handleReject = async e => {
     const id = e.target.id
@@ -83,6 +91,7 @@ function Translator({uuid,user}) {
         </tbody>
       </table>
           </div>
+          <button onClick={clickHandler2}>get List</button>
           <button onClick={clickHandler}>reservation</button>
         </div>
       ): (

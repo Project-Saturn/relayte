@@ -33,7 +33,8 @@ function Reservation({isCustomer,userUuid,setIsDefault}) {
         await axios.get(`http://localhost:5000/api/reservations/${id}`).then(d=>{
           console.log(d.data)
           if(d.data.length!==0) reservations.push(d.data)
-          
+          console.log('d.data')
+          console.log(d.data)
         }) 
       })
       
@@ -52,7 +53,7 @@ function Reservation({isCustomer,userUuid,setIsDefault}) {
     <div>
       <div>Reservations here</div> 
       
-      
+
       <div>{JSON.stringify(reservation)}</div>
       <button onClick={clickHandler2}>リスト取得</button>
       <button onClick={clickHandler}>もどる</button>
