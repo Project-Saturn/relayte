@@ -5,71 +5,28 @@ const PORT = process.env.PORT || 5000;
 const dbConfig = require('./knexfile');
 const path = require('path');
 const knex = require('knex')(dbConfig);
-const twilio = require('twilio');
-const tokenGenerator = require('./tokenGenerator');
 
 app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.static('build'));
 
-app.get('/api/token/:roomName/:identity', async (req, res) => {
-  const AccessToken = require('twilio').jwt.AccessToken;
-  const VideoGrant = AccessToken.VideoGrant;
+app.get('/video/token/:room/:identity', async (req, res) => {
+  console.log('Getting twilio configs');
+  const config = require('./config');
 
-  // Used when generating any kind of Access Token
-  const twilioAccountSid = process.env.TWILIO_ACCOUNT_SID;
-  const twilioApiKey = process.env.TWILIO_API_KEY_SID;
-  const twilioApiSecret = process.env.TWILIO_API_KEY_SECRET;
+  console.log("Generating token");
+  const { videoToken } = require('./tokens');
+  const identity = req.params.identity;
+  const room = req.params.room;
+  const token = videoToken(identity, room, config);
 
-  // Create an access token which we will sign and return to the client,
-  // containing the grant we just created
-  const token = new AccessToken(twilioAccountSid, twilioApiKey, twilioApiSecret);
-  token.identity = req.params.identity;
-
-  // Create a Video grant which enables a client to use Video 
-  // and limits access to the specified Room (DailyStandup)
-  const videoGrant = new VideoGrant({
-    room: req.params.roomName
-  });
-
-  // Add the grant to the token
-  token.addGrant(videoGrant);
-
-  // Serialize the token to a JWT string
-  const tokenJWT = token.toJwt();
-  console.log(tokenJWT);
-  res.json(tokenJWT);
-
-
-  // const accountSid = process.env.TWILIO_ACCOUNT_SID;
-  // const authToken = process.env.TWILIO_AUTH_TOKEN;
-  // const client = require('twilio')(accountSid, authToken);
-
-  // client.video.rooms
-  //   .create({
-  //     // recordParticipantsOnConnect: true,
-  //     // statusCallback: 'http://example.org',
-  //     type: 'group',
-  //     uniqueName: 'room'
-  //   })
-  //   .then(room => console.log(room.sid));
-
-
-  // console.log('sending text');
-  // const accountSid = process.env.TWILIO_ACCOUNT_SID; // Your Account SID from www.twilio.com/console
-  // const authToken = process.env.TWILIO_AUTH_TOKEN;   // Your Auth Token from www.twilio.com/console
-
-  // const twilio = require('twilio');
-  // const client = new twilio(accountSid, authToken);
-
-  // client.messages.create({
-  //   body: 'Hello from Node',
-  //   to: '+818035969228',  // Text this number
-  //   from: '+13126638271' // From a valid Twilio number
-  // })
-  //   .then((message) => console.log(message.sid));
-  // res.json('test completed');
+  console.log('Returning token');
+  res.set('Content-Type', 'application/json');
+  const jwtToken = { token: token.toJwt() };
+  
+  console.log(jwtToken);
+  res.json(jwtToken);
 });
 
 app.get('/api/reservations', async (req, res) => {

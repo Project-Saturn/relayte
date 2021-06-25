@@ -8,6 +8,7 @@ import firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/auth';
 import axios from "axios"
+import VideoChat from './VideoChat';
 
 import { useAuthState } from 'react-firebase-hooks/auth';
 require('dotenv').config();
@@ -29,6 +30,12 @@ function App() {
   const[priceAndLanguage,setPriceAndLanguage] = useState(false)
   const[uuid,setUuid] = useState("")
   const [user] = useAuthState(auth);
+
+  const queryParams = new URLSearchParams(window.location.search);
+  const [guestRoom, setGuestRoom] = useState(queryParams.get("guestRoom"));
+  const [guestName, setGuestName] = useState(queryParams.get("guestName"));
+  // const [username, setUsername] = useState(guestName ? guestName : "");
+  // const [roomName, setRoomName] = useState(guestRoom ? guestRoom : "");
 
 
   function SignIn() {
@@ -69,14 +76,20 @@ function App() {
     checkTranslator()
   },[user])
 
- 
+  console.log("guest room " + guestRoom)
+  console.log("user " + user)
   return (
     <div className="App">
       <header className="App-header">
-        {user ? <button onClick={() => auth.signOut()}>Sign Out</button> : <SignIn />}
 
-        {user!==null?(
+        
+
+        {/* {user ? <button onClick={() => auth.signOut()}>Sign Out</button> : <SignIn />} */}
+
+        {/* {user!==null?( */}
+        {guestRoom ? <VideoChat guestName={guestName} guestRoom={guestRoom} /> : user ? (
           <div>
+            <button onClick={() => auth.signOut()}>Sign Out</button>
             {login === false ?(
                     <Login 
                       setLogin={setLogin} 
@@ -114,9 +127,10 @@ function App() {
                     )}
           </div>
           ):(
-            <div>
+            // <div>
 
-            </div>
+            // </div>
+           <SignIn />
         )}
 
 
