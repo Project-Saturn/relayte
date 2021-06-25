@@ -100,7 +100,10 @@ function App() {
                                   />
                                 </div>
                               ):(
-                                <Translator user={user}/>
+                                <Translator 
+                                uuid={uuid}
+                                user={user}
+                                />
                               )}
                           
                             </div>  
