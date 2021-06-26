@@ -10,7 +10,6 @@ function App() {
   const queryParams = new URLSearchParams(window.location.search);
   const [guestRoom, setGuestRoom] = useState('');
   const [guestName, setGuestName] = useState('');
-  const [signInType, setSignInType] = useState();
 
   useEffect(async () => {
     await setGuestRoom(queryParams.get('guestRoom'));
@@ -25,7 +24,7 @@ function App() {
           : <LoginPage />}
       </header>
     </div>
-  )
+  );
 }
 
 export default App;

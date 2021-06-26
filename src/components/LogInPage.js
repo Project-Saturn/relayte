@@ -1,9 +1,7 @@
-// import './App.css';
 import React, { useEffect, useState } from 'react';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import axios from 'axios';
-// import VideoChat from './components/VideoChat';
 import WelcomePage from './WelcomePage';
 
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -28,24 +26,13 @@ function LogInPage() {
   const [userAuthenticationData] = useAuthState(auth);
 
   useEffect(() => {
-    console.log('use effect 1')
-    // if (userAuthenticationData) {
       lookupUserFromGoogleId();
-    // } else {
       setUser();
-    // }
-    // console.log(userAuthenticationData)
-    console.log(user)
   }, [userAuthenticationData])
 
   useEffect(() => {
-    console.log('use effect 2')
-    // if(userAuthenticationData && !user) {
       auth.signOut();
-    // }
-    // if(user && !userAuthenticationData) {
       setUser();
-    // }
   }, []);
   
   return (
@@ -86,9 +73,7 @@ function LogInPage() {
         const newUserId = (await axios.post(`/api/${userType}s/`, newUser)).data.id;
 
         const newUserData = (await axios.get(`/api/${userType}s/${newUserId}`)).data[0];
-        console.log('setting user')
         setUser(newUserData);
-        console.log('user set')
       }
     } catch (error) {
       console.error(error.message);
@@ -112,9 +97,7 @@ function SignIn(props) {
       <button id='customer' onClick={signInWithGoogle}>Sign in as a user</button>
       <button id='translator' onClick={signInWithGoogle}>Sign in as a translator</button>
     </div>
-  );
-
-  
+  ); 
 }
 
 export default LogInPage;

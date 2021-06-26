@@ -4,8 +4,6 @@ const Participant = ({ participant }) => {
   const [videoTracks, setVideoTracks] = useState([]);
   const [audioTracks, setAudioTracks] = useState([]);
 
-  console.log(audioTracks)
-  console.log(videoTracks)
   const videoRef = useRef();
   const audioRef = useRef();
   

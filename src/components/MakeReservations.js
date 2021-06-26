@@ -8,8 +8,14 @@ import Col from 'react-bootstrap/Col';
 require('dotenv').config();
 
 function MakeReservations(props) {
-  const { user, setMakeReservation, getReservations, setReservations, reservations } = props;
-  const [translators, setTranslators] = useState([])
+  const { 
+    user,
+    setUser,
+    setMakeReservation,
+    userType
+  } = props;
+  const [translators, setTranslators] = useState([]);
+
   useEffect(() => {
     getTranslators();
   }, []);
@@ -19,7 +25,7 @@ function MakeReservations(props) {
       <Button onClick={() => setMakeReservation(false)}>Back</Button>
       <ListTranslators />
     </div>
-  )
+  );
 
   function ListTranslators() {
     return translators
@@ -62,24 +68,10 @@ function MakeReservations(props) {
           customer_id: customerID,
           translator_id: translatorID
         }
-      }
-
-      // const updatedReservations = await axios.post(`/api/reservations/`, newReservation)
-      // .then(() => axios.get('/api/reservations'));
-      const updatedReservation = await axios.post(`/api/reservations/`, newReservation);
-      console.log('updatedReservation')
-      console.log(updatedReservation)
-      const latestReservation = await axios.get(`/api/reservations/${updatedReservation.data.id}`)
-      console.log('latest reservation');
-      console.log(latestReservation);
-
-      // setReservations([...reservations, ...latestReservation.data]);     
-      reservations.push(...latestReservation.data)
-      
-      // console.log('updatedReservations')
-      // console.log(updatedReservations)
-      // setReservations(updatedReservations);
-      await getReservations()
+      };      
+      await axios.post(`/api/reservations/`, newReservation);
+      const updatedUser = (await axios.get(`/api/${userType}s/${user.id}`)).data[0];
+      setUser(updatedUser);
       setMakeReservation(false);
     } catch (error) {
       console.error(error.message);
@@ -87,11 +79,9 @@ function MakeReservations(props) {
   }
 
   async function getTranslators() {
-    const allTranslators = await axios.get('/api/translators/').then((response) => response.data);
-    console.log(allTranslators);
+    const allTranslators = (await axios.get('/api/translators/')).data;
     setTranslators(allTranslators);
   }
 }
-
 
 export default MakeReservations;
