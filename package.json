@@ -15,10 +15,12 @@
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
+    "axios": "^0.21.1",
     "cors": "^2.8.5",
     "date-fns": "^2.22.1",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
+    "faker": "^5.5.3",
     "firebase": "^8.6.8",
     "knex": "^0.95.6",
     "knex-migrate": "^1.7.4",
@@ -40,7 +42,7 @@
     "rollback:migration": "knex migrate:rollback",
     "apply:migrations": "knex migrate:latest",
     "start": "node app.js",
-    "heroku-postbuild": "npm run build:client"
+    "heroku-postbuild": "npm run build:client && npm run knex apply:migrations"
   },
   "eslintConfig": {
     "extends": [

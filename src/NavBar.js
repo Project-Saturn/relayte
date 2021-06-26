@@ -1,4 +1,5 @@
 import React from 'react';
+import { auth } from './Login'
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -11,6 +12,8 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormGroup from '@material-ui/core/FormGroup';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -62,7 +65,14 @@ export default function NavBar() {
                 color="inherit"
               >
                 <AccountCircle />
-              </IconButton>
+                </IconButton>
+                <ExitToAppIcon
+                              aria-controls="menu-appbar"
+                            //   onClick={() => {
+                            //       auth.signOut()
+                            //       setLogin(false)
+                            //   }}
+                />          
               <Menu
                 id="menu-appbar"
                 anchorEl={anchorEl}

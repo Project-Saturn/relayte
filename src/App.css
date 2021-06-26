@@ -24,6 +24,11 @@
   color: white;
 }
 
+.photo {
+  height: 200px;
+  width: 320px;
+}
+
 .App-link {
   color: #61dafb;
 }

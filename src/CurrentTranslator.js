@@ -13,6 +13,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import Switch from '@material-ui/core/Switch';
 import Grid from '@material-ui/core/Grid';
+import axios from "axios";
 
 import DateFnsUtils from '@date-io/date-fns';
 import {
@@ -41,13 +42,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function CurrentTranslator() {
+const CurrentTranslator = () => {
 
-  const [selectedDate, setSelectedDate] = React.useState(new Date('2014-08-18T21:11:54'));
+  const [selectedDate, setSelectedDate] = React.useState(new Date('2021-06-18T21:11:54'));
 
-const handleDateChange = (date) => {
-  setSelectedDate(date);
-};
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+  };
   
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
@@ -88,66 +89,74 @@ const handleDateChange = (date) => {
             Please use the calendar below to book a a meeting with your translator.
           </DialogContentText>
           <form className={classes.form} noValidate>
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
-      <Grid container justify="space-around">
-        <KeyboardDatePicker
-          disableToolbar
-          variant="inline"
-          format="MM/dd/yyyy"
-          margin="normal"
-          id="date-picker-inline"
-          label="Date picker inline"
-          value={selectedDate}
-          onChange={handleDateChange}
-          KeyboardButtonProps={{
-            'aria-label': 'change date',
-          }}
-        />
-        <KeyboardTimePicker
-          margin="normal"
-          id="time-picker"
-          label="Time picker"
-          value={selectedDate}
-          onChange={handleDateChange}
-          KeyboardButtonProps={{
-            'aria-label': 'change time',
-          }}
-        />
-      </Grid>
-    </MuiPickersUtilsProvider>
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <Grid container justify="space-around">
+                <KeyboardDatePicker
+                  disableToolbar
+                  variant="inline"
+                  format="MM/dd/yyyy"
+                  margin="normal"
+                  id="date-picker-inline"
+                  label="Date picker inline"
+                  value={selectedDate}
+                  onChange={handleDateChange}
+                  KeyboardButtonProps={{
+                    'aria-label': 'change date',
+                  }}
+                />
+                <KeyboardTimePicker
+                  margin="normal"
+                  id="time-picker"
+                  label="Time picker"
+                  value={selectedDate}
+                  onChange={handleDateChange}
+                  KeyboardButtonProps={{
+                    'aria-label': 'change time',
+                  }}
+                />
+              </Grid>
+            </MuiPickersUtilsProvider>
 
           </form>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
-            Close
+            Book
+          </Button>
+          <Button onClick={handleClose} color="secondary">
+            Cancel
           </Button>
         </DialogActions>
       </Dialog>
     </React.Fragment>
-  );
+  )
 }
-
-
-
-
-
-// import React from "react";
-
-// function CurrentTranslator({setCurrentTranslator}) {
-
-//   const clickHandler = ()=>{
-//     // post   api/reservations
+        
+//   const clickHandler = async ()=>{
+//     await axios.post('http://localhost:5000/api/reservations',{
+      
+//         //c_id,t_idは上から持ってくる　s_time,d_minuteはここで取得
+        
+//           "reservation": {
+//               "customer_id": "51bbc994-21c9-4151-b4d1-eccf6d3b5f11",
+//               "translator_id": "12302b59-6b8e-49bc-a4be-5e1ee173ba4e",
+//               "start_time": "today",
+//               "duration_minutes": 90,
+//               "url": "https://www.testmeeting.com"
+//           }
+      
+    
+//     })
 //     setCurrentTranslator(null)
 //   }
 
 //   return (
 //     <div>
 //       <div>日付、時間</div>
-//       <div>post   api/reservations,　新規予約作成</div>
+//       <div>新規予約作成</div>
 //       <button onClick={clickHandler}>send</button>
 //     </div>
 //   );
 // }
 
-// export default CurrentTranslator;
+export default CurrentTranslator;

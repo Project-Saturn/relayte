@@ -7,7 +7,6 @@ import React, { useEffect, useState } from 'react';
 import loggedInUser from './context';
 import { trueFunc } from 'boolbase';
 import { auth } from './Login'
-import { Box } from '@material-ui/core';
 
 // import firebase from 'firebase/app';
 // import 'firebase/firestore';
@@ -54,6 +53,9 @@ function App() {
 
   return (
     <div className="App">
+      <header className="App-header">
+
+        <button onClick={() => { auth.signOut() }}>Sign Out</button>
         {login === false ?(
         <Login 
           setLogin={setLogin}
@@ -62,13 +64,8 @@ function App() {
         />) 
         : (
           <div>
-            <Box
-              width="100%"
-              align="center"
-            >
             {isCustomer === true ?(
-                <Customer  /> 
-              )
+              <Customer />)
               : (
                 <div>
                   {priceAndLanguage === false ?(
@@ -78,17 +75,14 @@ function App() {
                   ):(
                     <Translator/>
                   )}
-                 
-                  </div>
-              )} 
-              </Box>
-            </div>
+                  
+                </div>  
+              )}
+
+
+          </div>
         )}
-      <button onClick={() => {
-          auth.signOut() 
-            setLogin(false)
-            }
-        }>Sign Out</button>
+      </header>
     </div>
   );
 }
