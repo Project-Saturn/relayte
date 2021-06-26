@@ -28,25 +28,32 @@ function LogInPage() {
   const [userAuthenticationData] = useAuthState(auth);
 
   useEffect(() => {
-    if (userAuthenticationData) lookupUserFromGoogleId();
+    console.log('use effect 1')
+    // if (userAuthenticationData) {
+      lookupUserFromGoogleId();
+    // } else {
+      setUser();
+    // }
+    // console.log(userAuthenticationData)
+    console.log(user)
   }, [userAuthenticationData])
+
+  useEffect(() => {
+    console.log('use effect 2')
+    // if(userAuthenticationData && !user) {
+      auth.signOut();
+    // }
+    // if(user && !userAuthenticationData) {
+      setUser();
+    // }
+  }, []);
   
-  // return (
-  //   <div className="LoginPage">
-  //     {userAuthenticationData
-  //      ? <WelcomePage
-  //        userType={userType}
-  //        userAuthenticationData={userAuthenticationData}
-  //        googleID={userAuthenticationData.providerData[0].uid}
-  //        auth={auth} />
-  //      : <SignIn setUserType={setUserType} />}
-  //   </div>
-  // )
   return (
     <div className="LoginPage">
-      {user
+      {userAuthenticationData && user
        ? <WelcomePage
          user={user}
+         setUser={setUser}
          userType={userType}
          auth={auth} />
        : <SignIn setUserType={setUserType} />}
@@ -102,8 +109,8 @@ function SignIn(props) {
     <div>
       <h1>Log In to Relayte</h1>
       <h2>Please select an option below</h2>
-      <button id={'customer'} onClick={signInWithGoogle}>Sign in as a user</button>
-      <button id={'translator'} onClick={signInWithGoogle}>Sign in as a translator</button>
+      <button id='customer' onClick={signInWithGoogle}>Sign in as a user</button>
+      <button id='translator' onClick={signInWithGoogle}>Sign in as a translator</button>
     </div>
   );
 

@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Participant from "./Participant";
 
-const Room = ({ roomName, room, handleLogout }) => {
+const Room = ({ roomName, room, handleLogout, guestRoom }) => {
   const [participants, setParticipants] = useState([]);
+  const guestURL = window.location.protocol 
+                   + "//" + window.location.host
+                   + "/?guestRoom=" + guestRoom;
 
   useEffect(() => {
     const participantConnected = (participant) => {
@@ -43,7 +46,9 @@ const Room = ({ roomName, room, handleLogout }) => {
         ) : (
           ""
         )}
-        <button onClick={handleLogout}>Log out</button>
+        <p>Invite others to join at the following link</p>
+        <p>{guestURL}</p>
+        <button onClick={handleLogout}>Leave Room</button>
       </div>
     </div>
   );
