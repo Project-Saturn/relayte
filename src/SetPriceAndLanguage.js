@@ -33,7 +33,7 @@ function SetPriceAndLanguage({setPriceAndLanguage,user}) {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div>1時間当たりの価格と翻訳可能な言語を入力してください</div>
+      <div>Please enter your fee per hour and spoken languages</div>
       <label>
         price/hour:
         <input type="text" {...price} />

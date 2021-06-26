@@ -1,43 +1,43 @@
 import React, { useEffect, useState } from 'react';
 import axios from "axios";
 
-function Reservation({isCustomer,userUuid,setIsDefault}) {
+function Reservation({ isCustomer, userUuid, setIsDefault }) {
 
-  const [reservation,setReservation]=useState([])
-  const reservations=[]
+  const [reservation, setReservation] = useState([])
+  const reservations = []
 
-  const clickHandler = ()=>{
-    
-    console.log(isCustomer,reservations)
-   
+  const clickHandler = () => {
+
+    console.log(isCustomer, reservations)
+
     setIsDefault(true)
   }
-  const clickHandler2 = ()=>{
-    
-    
+  const clickHandler2 = () => {
+
+
     setReservation(reservations)
-    
+
   }
 
-  const getReservation = async ()=>{
-    if(isCustomer){
-      userUuid.forEach(async(id)=>{
-        await axios.get(`http://localhost:5000/api/reservations/${id}`).then(d=>{
+  const getReservation = async () => {
+    if (isCustomer) {
+      userUuid.forEach(async (id) => {
+        await axios.get(`http://localhost:5000/api/reservations/${id}`).then(d => {
           reservations.push(d.data)
-        }) 
+        })
       })
-    }else{
+    } else {
       //translatorのreservations表示
-      
-      userUuid.forEach(async(id)=>{
-        await axios.get(`http://localhost:5000/api/reservations/${id}`).then(d=>{
+
+      userUuid.forEach(async (id) => {
+        await axios.get(`http://localhost:5000/api/reservations/${id}`).then(d => {
           console.log(d.data)
-          if(d.data.length!==0) reservations.push(d.data)
+          if (d.data.length !== 0) reservations.push(d.data)
           console.log('d.data')
           console.log(d.data)
-        }) 
+        })
       })
-      
+
     }
   }
 
@@ -58,22 +58,23 @@ function Reservation({isCustomer,userUuid,setIsDefault}) {
       <button onClick={clickHandler2}>リスト取得</button>
       <button onClick={clickHandler}>もどる</button> */}
 
-<table id="simple-board">
+      <div>Confirmed Reservations</div>
+      <table id="simple-board">
         <tbody>
           <tr id="row0">
             <td>---Start Time---</td>
             <td>---Duration---</td>
-            <td>---ID---</td>
-            
+            <td>---Join---</td>
+
           </tr>
           {reservation.map((translator) => (
-          <tr id="row1">  
+            <tr id="row1">
               <td>{translator[0].start_time}</td>
               <td>{translator[0].duration_minutes}</td>
-              <td>{translator[0].id}</td>   
-              
-          </tr>
-         ))}
+              <td><a href="http://localhost:5000/?guestRoom=testroom"><button>Join Meeting</button></a></td>
+
+            </tr>
+          ))}
         </tbody>
       </table>
       {/* <div>{JSON.stringify(reservation)}</div> */}

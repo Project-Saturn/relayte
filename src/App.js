@@ -8,7 +8,7 @@ import firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/auth';
 import axios from "axios"
-import VideoChat from './VideoChat';
+import VideoChat from './components/VideoChat';
 
 import { useAuthState } from 'react-firebase-hooks/auth';
 require('dotenv').config();

@@ -14,6 +14,7 @@
 }
 
 .App-header {
+  margin: 0px;
   background-color: #282c34;
   min-height: 100vh;
   display: flex;
@@ -37,9 +38,18 @@
   }
 }
 
+.remote-participants {
+  display: flex;
+  flex-direction: row;
+}
+
+.participant {
+
+  
+}
+
+
 /* 
-
-
 
 
 * {
