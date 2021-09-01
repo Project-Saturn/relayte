@@ -57,6 +57,11 @@ function WelcomePage(props) {
     }
   }
 
+  function signOut() {
+    auth.signOut();
+    setUser();
+  }
+
   useEffect(() => {
     lookupUserFromGoogleId();
   }, []);
