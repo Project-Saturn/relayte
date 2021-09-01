@@ -17,6 +17,8 @@ function WelcomePage(props) {
 
   async function lookupUserFromGoogleId() {
     try {
+      console.log("userAuthenticationData")
+      console.log(userAuthenticationData)
       const existingUser = (await axios.get(`/api/${userType}s/google/${userAuthenticationData.providerData[0].uid}`)).data
       console.log("Existing User")
       console.log(existingUser)
