@@ -24,8 +24,8 @@ app.get('/video/token/:room/:identity', async (req, res) => {
   console.log('Returning token');
   res.set('Content-Type', 'application/json');
   const jwtToken = { token: token.toJwt() };
-  
-  console.log(jwtToken);
+  // res.json(token)
+  // console.log(jwtToken);
   res.json(jwtToken);
 });
 

@@ -33,9 +33,6 @@ const Room = ({ roomName, room, handleLogout, guestRoom }) => {
 
   return (
     <div className="room">
-      {/* <h4>Room: {roomName}</h4> */}
-      
-      {/* <h5>Remote Participants</h5> */}
       <div className="remote-participants">{remoteParticipants}</div>
       <div className="local-participant">
         {room ? (
