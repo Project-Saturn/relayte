@@ -25,24 +25,26 @@ function LogInPage() {
   const [user, setUser] = useState();
   const [userAuthenticationData] = useAuthState(auth);
 
-  useEffect(() => {
-      lookupUserFromGoogleId();
-      setUser();
-  }, [userAuthenticationData])
+  // useEffect(() => {
+  //     lookupUserFromGoogleId();
+  //     setUser();
+  // }, [userAuthenticationData])
 
-  useEffect(() => {
-      auth.signOut();
-      setUser();
-  }, []);
+  // useEffect(() => {
+  //     auth.signOut();
+  //     setUser();
+  // }, []);
   
   return (
     <div className="LoginPage">
-      {userAuthenticationData && user
+      {/* {userAuthenticationData && user */}
+      {userAuthenticationData
        ? <WelcomePage
          user={user}
          setUser={setUser}
          userType={userType}
-         auth={auth} />
+         auth={auth}
+         userAuthenticationData={userAuthenticationData} />
        : <SignIn setUserType={setUserType} />}
     </div>
   )

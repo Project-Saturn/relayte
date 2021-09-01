@@ -13,7 +13,7 @@ of your associated Firebase project
 
 ### DATABASE_URL
 This is the url of your PostgreSQL database in the following format:
-postgres://\<username>:@\<url>:\<password>/\<database name>
+postgres://\<username>:\<password>@\<url>:\<password>/\<database name>
 
 ### TWILIO_ACCOUNT_SID
 This can be found on your project dashboard on your Twilio account
