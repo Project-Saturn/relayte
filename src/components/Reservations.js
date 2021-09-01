@@ -19,6 +19,7 @@ function Reservations(props) {
   useEffect(() => (
     getReservations()
   ), [makeReservation]);
+
   return (
     <div className='Reservations'>
       {makeReservation

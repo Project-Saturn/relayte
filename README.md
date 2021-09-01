@@ -15,6 +15,9 @@ of your associated Firebase project
 This is the url of your PostgreSQL database in the following format:
 postgres://\<username>:\<password>@\<url>:\<password>/\<database name>
 
+### NO_SSL
+Set this to true if running locally unless you modify the server to accept SSL connections (certain hosting services like Heroku support SSL by default so this isn't necessary if deploying to there)
+
 ### TWILIO_ACCOUNT_SID
 This can be found on your project dashboard on your Twilio account
 

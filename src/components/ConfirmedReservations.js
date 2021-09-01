@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Button from 'react-bootstrap/Button';
@@ -47,7 +47,6 @@ function ConfirmedReservations(props) {
 
   async function cancelReservation(e) {
     try {
-      console.log('canceling')
       const id = e.target.parentElement.parentElement.parentElement.id;
       await axios.delete(`/api/reservations/${id}`)
       const updatedUser = (await axios.get(`/api/${userType}s/${user.id}`)).data[0];
