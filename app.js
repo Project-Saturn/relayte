@@ -319,12 +319,6 @@ app.delete('/api/reservations/:id', async (req, res) => {
   }
 });
 
-app.get('/room', async (req, res) => {
-  console.log('Serving alternate page');
-  res.sendFile(path.join(__dirname, 'client/build/newone.html'));
-})
-
-
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });

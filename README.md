@@ -1,70 +1,118 @@
-# Getting Started with Create React App
+# Relayte
+This is an app to connect users to translators to help navigate difficult communication situations in foreign languages.  You can see a live version by clicking the link below.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+[Relayte on Heroku](https://relayte.herokuapp.com/)
 
-## Available Scripts
+## Running Relayte locally
+Clone the repository locally and create a .env file in the root of the project with the following environment variables defined
 
-In the project directory, you can run:
+### REACT_APP_API_KEY, REACT_APP_AUTH_DOMAIN, REACT_APP_PROJECT_ID, REACT_APP_STORAGE_BUCKET, REACT_APP_MESSAGING_SENDER_ID, REACT_APP_APP_ID
+These are associated with your Firebase account and can be found in the bottom of
+"Project Settings" -> "General"
+of your associated Firebase project
 
-### `npm start`
+### DATABASE_URL
+This is the url of your PostgreSQL database in the following format:
+postgres://\<username>:@\<url>:\<password>/\<database name>
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### TWILIO_ACCOUNT_SID
+This can be found on your project dashboard on your Twilio account
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### TWILIO_API_KEY_SID, TWILIO_API_KEY_SECRET
+These can be found when you generate new API keys.  Please follow the instructions at https://www.twilio.com/docs/glossary/what-is-an-api-key
 
-### `npm test`
+## Running the app in a dev environment
+1. From a new terminal instance, navigate to the project's root directory and run "npm run knex apply:migrations"
+2. Start the server using the command "npm run dev:server"
+3. Start the client using the command "npm run dev:client" and access the app from localhost:3000
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Running a production build of the app
+1. From a new terminal instance, navigate to the project's root directory and run "npm run knex apply:migrations"
+2. Build the front-end using the command "npm run build:client"
+3. Start the server with the command "npm start" and access the appfrom localhost:5000
 
-### `npm run build`
+## Migrations
+Database migrations can be run using the following commands
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### npm run new:migration <migration name>
+This will create a new migration file in the migrations directory
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### npm run apply:migrations
+This will run any migration files that have yet to be run on the database
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### npm run rollback:migration
+This will roll back to the previous migration
 
-### `npm run eject`
+## API Endpoints
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+The following are the API endpoints used on the server
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### GET /video/token/:room/:identity
+Takes in the room ID (:room) and username (:identity) and returns a Twilio access token
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### GET /api/reservations
+Returns data for all reservations in database
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### GET /api/customers
+Returns data for all customers in database
 
-## Learn More
+### GET /api/translators
+Returns data for all translators in database
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### GET /api/reservations/:id
+Returns data for resevation with matching id (:id)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### GET /api/customers/:id
+Returns data for customer with matching id (:id)
 
-### Code Splitting
+### GET /api/translators/:id
+Returns data for translator with matching id (:id)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### GET /api/customers/google/:id
+Returns data for customer with matching google id (:id)
 
-### Analyzing the Bundle Size
+### GET /api/translators/google/:id
+Returns data for translator with matching google id (:id)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### POST /api/reservations
+Creates a new reservation
 
-### Making a Progressive Web App
+### POST /api/customers
+Creates a new customer
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### POST /api/translators
+Creates a new translator
 
-### Advanced Configuration
+### PUT /api/reservations/:id
+Modifies reservation with matching id (:id)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+### PUT /api/customers/:id
+Modifies customer with matching id (:id)
 
-### Deployment
+### PUT /api/translators/:id
+Modifies translator with matching id (:id)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+### DELETE /api/reservations/:id
+Deletes reservation with matching id (:id)
 
-### `npm run build` fails to minify
+## Technologies Used
+### Node.js
+This was used to write the back-end for this app
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### Express.js
+This was used to write the server as well as create and handle the API endpoints
+
+### PostgreSQL
+PostgreSQL was used as a database to store all the user and reservation information
+
+### Knex.js
+Knex.js was used to architect and interact with the PostgreSQL database
+
+### React
+React was used for creating the front-end for this app
+
+### Firebase
+Firebase was used to handle user login and authentication
+
+### Twilio
+Twilio was used on the back-end and front-end to allow users access to real-time video communicaiton

@@ -32,11 +32,11 @@
     "web-vitals": "^1.1.2"
   },
   "scripts": {
-    "start:client": "react-scripts start",
+    "dev:client": "react-scripts start",
     "build:client": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "hack:server": "nodemon app.js",
+    "dev:server": "nodemon app.js",
     "new:migration": "knex migrate:make",
     "rollback:migration": "knex migrate:rollback",
     "apply:migrations": "knex migrate:latest",
