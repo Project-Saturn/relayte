@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Participant from "./Participant";
 
-const Room = ({ roomName, room, handleLogout }) => {
+const Room = ({ roomName, room, handleLogout, guestRoom }) => {
   const [participants, setParticipants] = useState([]);
+  const guestURL = window.location.protocol 
+                   + "//" + window.location.host
+                   + "/?guestRoom=" + guestRoom;
 
   useEffect(() => {
     const participantConnected = (participant) => {
@@ -30,8 +33,7 @@ const Room = ({ roomName, room, handleLogout }) => {
 
   return (
     <div className="room">
-      <h2>Room: {roomName}</h2>
-      <button onClick={handleLogout}>Log out</button>
+      <div className="remote-participants">{remoteParticipants}</div>
       <div className="local-participant">
         {room ? (
           <Participant
@@ -41,9 +43,10 @@ const Room = ({ roomName, room, handleLogout }) => {
         ) : (
           ""
         )}
+        <p>Invite others to join at the following link</p>
+        <p>{guestURL}</p>
+        <button onClick={handleLogout}>Leave Room</button>
       </div>
-      <h3>Remote Participants</h3>
-      <div className="remote-participants">{remoteParticipants}</div>
     </div>
   );
 };

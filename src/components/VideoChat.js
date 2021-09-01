@@ -5,10 +5,7 @@ import Room from "./Room";
 import axios from "axios";
 
 const VideoChat = (props) => {
-  const { guestName, guestRoom } = props;
-  // const queryParams = new URLSearchParams(window.location.search);
-  // const [guestRoom, setGuestRoom] = useState(queryParams.get("guestRoom"));
-  // const [guestName, setGuestName] = useState(queryParams.get("guestName"));
+  const { guestName, guestRoom, setRoomID } = props;
   const [username, setUsername] = useState(guestName ? guestName : "");
   const [roomName, setRoomName] = useState(guestRoom ? guestRoom : "");
   const [room, setRoom] = useState(null);
@@ -26,10 +23,7 @@ const VideoChat = (props) => {
     async (event) => {
       event.preventDefault();
       setConnecting(true);
-      // const response = await axios.post("/video/token", {"identity": username, "room": roomName});
-      // const response = await axios.post("http://localhost:5000/video/token", {"identity": username, "room": roomName});
-      const response = await axios.get(`http://localhost:5000/video/token/${roomName}/${username}`);
-      // const response = await axios.get(`/video/token/${roomName}/${username}`);
+      const response = await axios.get(`/video/token/${roomName}/${username}`);
       const { data } = response;
       Video.connect(data.token, {
         name: roomName,
@@ -56,6 +50,7 @@ const VideoChat = (props) => {
         });
         prevRoom.disconnect();
       }
+      setRoomID();
       return null;
     });
   }, []);
@@ -82,7 +77,7 @@ const VideoChat = (props) => {
   let render;
   if (room) {
     render = (
-      <Room roomName={roomName} room={room} handleLogout={handleLogout} />
+      <Room roomName={roomName} room={room} handleLogout={handleLogout} guestRoom={guestRoom} />
     );
   } else {
     render = (

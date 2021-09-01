@@ -24,8 +24,8 @@ app.get('/video/token/:room/:identity', async (req, res) => {
   console.log('Returning token');
   res.set('Content-Type', 'application/json');
   const jwtToken = { token: token.toJwt() };
-  
-  console.log(jwtToken);
+  // res.json(token)
+  // console.log(jwtToken);
   res.json(jwtToken);
 });
 
@@ -318,12 +318,6 @@ app.delete('/api/reservations/:id', async (req, res) => {
     res.json(error.message);
   }
 });
-
-app.get('/room', async (req, res) => {
-  console.log('Serving alternate page');
-  res.sendFile(path.join(__dirname, 'client/build/newone.html'));
-})
-
 
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
